@@ -1,27 +1,33 @@
 export class Scroller {
     private isScrolling = false;
 
-    async scrollToBottom(): Promise<boolean> {
+    async scroll(): Promise<boolean> {
         if (this.isScrolling) return false;
 
         this.isScrolling = true;
         const originalHeight = document.documentElement.scrollHeight;
+        const currentPosition = window.scrollY;
+        const windowHeight = window.innerHeight;
 
-        window.scrollTo(0, document.documentElement.scrollHeight);
+        // 画面の半分くらいスクロール！
+        const scrollAmount = Math.min(windowHeight * 0.5, 800);
+        window.scrollTo({
+            top: currentPosition + scrollAmount,
+            behavior: 'smooth',
+        });
 
-        // 新しいコンテンツが読み込まれるのを待つ
-        await new Promise((resolve) => setTimeout(resolve, 2000));
+        const newHeight = document.documentElement.scrollHeight;
 
         this.isScrolling = false;
-
-        // スクロール後に新しいコンテンツが追加されたかチェック
-        return document.documentElement.scrollHeight > originalHeight;
+        return newHeight > originalHeight;
     }
 
     hasErrorMessage(): boolean {
         const spans = document.querySelectorAll('span');
-        return Array.from(spans).some(
+        const hasError = Array.from(spans).some(
             (span) => span.textContent?.includes('問題が発生しました') ?? false,
         );
+        if (hasError) console.log('検索エラー！'); // デバッグログ追加！
+        return hasError;
     }
 }

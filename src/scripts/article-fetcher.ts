@@ -1,9 +1,9 @@
 export class ArticleFetcher {
     private processedDates: Set<string> = new Set();
 
-    getUnprocessedArticles(): HTMLElement[] {
+    getNextUnprocessedArticle(): HTMLElement | null {
         const articles = Array.from(document.querySelectorAll('article'));
-        return articles.filter((article) => !this.isProcessed(article));
+        return articles.find((article) => !this.isProcessed(article)) || null;
     }
 
     private isProcessed(article: HTMLElement): boolean {

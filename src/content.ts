@@ -9,13 +9,18 @@ chrome.runtime.sendMessage({ action: ACTION_GET_SETTINGS }, (response) => {
 
     const extensionSettings = response.settings as ExtensionSettings;
 
-    console.log('This extension is working properly! ');
-    console.log('extensionSettings:');
-    console.log(extensionSettings);
+    console.log('This extension is working properly!🎉');
+    console.log('extensionSettings⚙️', extensionSettings);
 
-    const scraper = new ImageScraper();
+    if (!extensionSettings.enabled) {
+        console.log('拡張機能がOFFだよ😪');
+        return;
+    }
+
+    const scraper = new ImageScraper(extensionSettings.maxSaveCount);
     // 開始
-    setTimeout(() => scraper.start(), 3000);
+    setTimeout(() => scraper.start(), 1500);
+
     // 停止したい時
     // scraper.stop();
 });

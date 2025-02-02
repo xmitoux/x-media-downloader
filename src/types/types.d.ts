@@ -1,4 +1,7 @@
-type ExtensionSettings = { template: string };
+type ExtensionSettings = {
+    enabled: boolean;
+    maxSaveCount: number;
+};
 
 type PostData = {
     datetime: Date;
