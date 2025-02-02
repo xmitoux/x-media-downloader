@@ -1,12 +1,12 @@
 import { defineManifest } from '@crxjs/vite-plugin';
 import pkg from './package.json';
 
-const extensionName = 'TEMPLATE EXTENSION';
+const extensionName = 'X Media Downloader';
 
 export const manifest = defineManifest((env) => ({
     manifest_version: 3,
     name: env.mode === 'production' ? extensionName : `[DEV] ${extensionName}`,
-    description: 'This is template description. Be sure to modify it.',
+    description: 'Download media from X website.',
     version: pkg.version,
     // icons: {
     //     '128': 'icon.png',
@@ -23,7 +23,7 @@ export const manifest = defineManifest((env) => ({
     },
     content_scripts: [
         {
-            matches: ['https://this-is-template-url/be-sure-to-modify-it'],
+            matches: ['https://x.com/*'],
             js: ['./src/content.ts'],
         },
     ],
