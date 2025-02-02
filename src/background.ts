@@ -5,16 +5,17 @@ const defaultSettings: ExtensionSettings = {
     maxSaveCount: 0,
 };
 
+chrome.storage.local.get().then((settings) => {
+    if (Object.keys(settings).length !== Object.keys(defaultSettings).length) {
+        // 設定の数に差異があるときはデフォルト値を設定
+        // (開発中に設定が増えたときやインストールのとき用)
+        chrome.storage.local.set(defaultSettings);
+    }
+});
+
 chrome.action.onClicked.addListener(() => {
     // 設定画面はポップアップで表示するので不要
     // chrome.tabs.create({ url: 'index.html' });
-
-    chrome.storage.local.get().then((settings) => {
-        if (!Object.keys(settings).length) {
-            // インストール直後は設定が無なのでデフォルト値を設定
-            chrome.storage.local.set(defaultSettings);
-        }
-    });
 });
 
 chrome.runtime.onMessage.addListener((request, _, sendResponse) => {
