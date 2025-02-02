@@ -1,7 +1,8 @@
 import { ACTION_GET_SETTINGS } from './constants/chrome-api';
 
 const defaultSettings: ExtensionSettings = {
-    template: 'This is template setting. Be sure to modify it.',
+    enabled: true,
+    maxSaveCount: 0,
 };
 
 chrome.action.onClicked.addListener(() => {

@@ -4,7 +4,8 @@ import { ACTION_UPDATE_SETTINGS } from '@/constants/chrome-api';
 import { TARGET_URL } from '@/constants/extension';
 
 const currentSettings = ref<ExtensionSettings>({
-    template: 'This is template setting. Be sure to modify it.',
+    enabled: true,
+    maxSaveCount: 0,
 });
 
 onMounted(async () => {
@@ -23,8 +24,26 @@ const saveSettings = async () => {
 </script>
 
 <template>
-    <t1>Extension Settings</t1>
-    <button @click="saveSettings">SAVE</button>
+    <h1>Extension Settings</h1>
+
+    <div class="flex-column-form">
+        <div>
+            Enabled
+            <input v-model="currentSettings.enabled" type="checkbox" />
+        </div>
+        <div>
+            Max Save Count (0 for unlimited)
+            <input v-model="currentSettings.maxSaveCount" type="number" />
+        </div>
+
+        <button style="width: 100px" @click="saveSettings">Save</button>
+    </div>
 </template>
 
-<style scoped></style>
+<style scoped>
+.flex-column-form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+</style>

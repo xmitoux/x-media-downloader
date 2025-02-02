@@ -9,13 +9,23 @@ export class ImageScraper {
     private fileSaver = new FileSaver();
     private scroller = new Scroller();
     private isRunning = false;
+    private maxSaveCount = 0;
+    private saveCount = 0;
+
+    constructor(maxSaveCount: number) {
+        this.maxSaveCount = maxSaveCount === 0 ? Infinity : maxSaveCount;
+    }
 
     async start(): Promise<void> {
         if (this.isRunning) return;
         this.isRunning = true;
 
         try {
-            while (this.isRunning && !this.scroller.hasErrorMessage()) {
+            while (
+                this.isRunning &&
+                !this.scroller.hasErrorMessage() &&
+                this.saveCount < this.maxSaveCount
+            ) {
                 // まず今表示されてる投稿を1個見つける！
                 const article = this.articleFetcher.getNextUnprocessedArticle();
 
@@ -26,6 +36,9 @@ export class ImageScraper {
                         // 画像保存！
                         console.log('画像保存するよ:', postData.imageUrl);
                         await this.fileSaver.saveImage(postData);
+                        this.saveCount++;
+
+                        // 投稿を保存済み扱いに！
                         this.articleFetcher.markAsProcessed(article);
 
                         // 1個処理したらすぐスクロール！新しいのを表示させる！
