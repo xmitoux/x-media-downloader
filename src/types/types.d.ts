@@ -1,0 +1,1 @@
+type ExtensionSettings = { template: string };
