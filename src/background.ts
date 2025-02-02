@@ -6,7 +6,8 @@ const defaultSettings: ExtensionSettings = {
 };
 
 chrome.action.onClicked.addListener(() => {
-    chrome.tabs.create({ url: 'index.html' });
+    // 設定画面はポップアップで表示するので不要
+    // chrome.tabs.create({ url: 'index.html' });
 
     chrome.storage.local.get().then((settings) => {
         if (!Object.keys(settings).length) {

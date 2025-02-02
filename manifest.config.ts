@@ -12,7 +12,7 @@ export const manifest = defineManifest((env) => ({
     //     '128': 'icon.png',
     // },
     permissions: ['activeTab', 'storage', 'unlimitedStorage'],
-    options_page: 'index.html',
+    // options_page: 'index.html',  // 設定画面はポップアップで表示するので不要
     background: {
         service_worker: './src/background.ts',
     },
@@ -20,6 +20,8 @@ export const manifest = defineManifest((env) => ({
         // default_icon: {
         //     '128': 'icon.png',
         // },
+        // 設定画面のポップアップ表示
+        default_popup: 'index.html',
     },
     content_scripts: [
         {

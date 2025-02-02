@@ -13,6 +13,8 @@ onMounted(async () => {
     currentSettings.value = { ...currentSettings.value, ...storageSettings };
 });
 
+const saved = ref(false);
+
 const saveSettings = async () => {
     await chrome.storage.local.set(currentSettings.value);
 
@@ -20,30 +22,55 @@ const saveSettings = async () => {
     if (tab && tab.id) {
         await chrome.tabs.sendMessage(tab.id, { action: ACTION_UPDATE_SETTINGS });
     }
+
+    saved.value = true;
+    setTimeout(() => {
+        saved.value = false;
+    }, 2000);
 };
 </script>
 
 <template>
-    <h1>Extension Settings</h1>
+    <div class="settings-container">
+        <div class="title">Settings</div>
 
-    <div class="flex-column-form">
-        <div>
-            Enabled
-            <input v-model="currentSettings.enabled" type="checkbox" />
-        </div>
-        <div>
-            Max Save Count (0 for unlimited)
-            <input v-model="currentSettings.maxSaveCount" type="number" />
-        </div>
+        <div class="flex-column-form">
+            <div>
+                <label for="check">Enabled</label>
+                <input v-model="currentSettings.enabled" id="check" type="checkbox" />
+            </div>
+            <div>
+                Max Save Count (0 for unlimited)
+                <input v-model="currentSettings.maxSaveCount" type="number" />
+            </div>
 
-        <button style="width: 100px" @click="saveSettings">Save</button>
+            <div>
+                <button class="button" @click="saveSettings">Save</button>
+                <span v-show="saved" style="color: red">Saved!✅️</span>
+            </div>
+        </div>
     </div>
 </template>
 
 <style scoped>
+.settings-container {
+    width: 200px;
+    padding: 10px;
+}
+.title {
+    font-size: 20px;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
 .flex-column-form {
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    gap: 16px;
+}
+
+.button {
+    width: 100px;
+    margin-right: 12px;
 }
 </style>
