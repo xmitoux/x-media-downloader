@@ -15,7 +15,8 @@ chrome.runtime.sendMessage({ action: ACTION_GET_SETTINGS }, (response) => {
 
     const scraper = new ImageScraper();
     // 開始
-    setTimeout(() => scraper.start(), 3000);
+    setTimeout(() => scraper.start(), 1500);
+
     // 停止したい時
     // scraper.stop();
 });
